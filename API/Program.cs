@@ -10,6 +10,7 @@ using API.Middleware;
 using API.Helpers;
 using API.Service;
 using API.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

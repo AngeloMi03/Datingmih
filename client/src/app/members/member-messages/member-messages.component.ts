@@ -27,10 +27,10 @@ export class MemberMessagesComponent implements OnInit {
     })
   }*/
 
-  sendMessage(){
-    this.messageService.SendMessage(this.username, this.contentMessage).subscribe(
-      (message) => {
-        this.messages.push(message);
+  sendMessage(){                                                       //.subsribe
+    this.messageService.SendMessage(this.username, this.contentMessage).then(
+      () => {
+        //this.messages.push(message);
         this.messageForm.reset();
       }
     )

@@ -15,7 +15,7 @@ namespace API.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.0-preview.4.23259.3");
 
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
@@ -152,34 +152,6 @@ namespace API.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("API.Entities.Connection", b =>
-                {
-                    b.Property<string>("ConnectionId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GroupName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ConnectionId");
-
-                    b.HasIndex("GroupName");
-
-                    b.ToTable("Connections");
-                });
-
-            modelBuilder.Entity("API.Entities.Group", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("API.Entities.Message", b =>
@@ -367,13 +339,6 @@ namespace API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("API.Entities.Connection", b =>
-                {
-                    b.HasOne("API.Entities.Group", null)
-                        .WithMany("Connections")
-                        .HasForeignKey("GroupName");
-                });
-
             modelBuilder.Entity("API.Entities.Message", b =>
                 {
                     b.HasOne("API.Entities.AppUsers", "Recipient")
@@ -473,11 +438,6 @@ namespace API.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("API.Entities.Group", b =>
-                {
-                    b.Navigation("Connections");
                 });
 #pragma warning restore 612, 618
         }

@@ -58,6 +58,11 @@ app.UseMiddleware<ExeptionsMiddleware>();
 
 
 
+app.UseCors(x => x.AllowAnyHeader()
+.AllowCredentials()
+.WithOrigins("http://localhost:4200")
+.AllowAnyMethod()
+);
 
 /*
 */
@@ -67,11 +72,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors(x => x.AllowAnyHeader()
-.AllowCredentials()
-.WithOrigins("http://localhost:4200")
-.AllowAnyMethod()
-);
 
 app.MapControllers();
 

@@ -9,8 +9,9 @@ namespace API.SignalR
     {
         private static readonly Dictionary<string, List<string>> OnlineUser = new ();
 
-        public Task UserConnected(string username, string connectedId)
+        public Task<bool> UserConnected(string username, string connectedId)
         {
+            bool isOnline = false;
             lock(OnlineUser)
             {
                 if(OnlineUser.ContainsKey(username))
@@ -18,18 +19,20 @@ namespace API.SignalR
                     OnlineUser[username].Add(connectedId);
                 }else{
                     OnlineUser.Add(username,new List<string>(){connectedId});
+                    isOnline = true;
                 }
             }
-            return Task.CompletedTask;
+            return Task.FromResult(isOnline);
         }
 
-        public Task UserDisconnected(string username, string connectedId)
+        public Task<bool> UserDisconnected(string username, string connectedId)
         {
+            bool IsOffline = false;
             lock(OnlineUser)
             {
                 if(!OnlineUser.ContainsKey(username))
                 {
-                    return Task.CompletedTask;
+                    return Task.FromResult(IsOffline);
                 }
 
                 OnlineUser[username].Remove(connectedId);
@@ -37,9 +40,10 @@ namespace API.SignalR
                 if(OnlineUser.Count == 0)
                 {
                     OnlineUser.Remove(username);
+                    IsOffline = true;
                 }
             }
-            return Task.CompletedTask;
+            return Task.FromResult(IsOffline);
         }
 
         public Task<string[]> GetOnlineUser()
@@ -51,6 +55,17 @@ namespace API.SignalR
              }
 
              return Task.FromResult(onlineUser);
+        }
+
+        public Task<List<string>> GetconnexionFromUser(string username)
+        {
+             List<string> connexionIds;
+             lock(OnlineUser)
+             {
+                connexionIds = OnlineUser.GetValueOrDefault(username);
+             }
+
+             return Task.FromResult(connexionIds);
         }
     }
 }

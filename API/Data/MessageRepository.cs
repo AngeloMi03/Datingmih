@@ -22,6 +22,11 @@ namespace API.Data
             _datacontext = datacontext;
         }
 
+        public void AddGroup(Group group)
+        {
+            _datacontext.Groups!.Add(group);
+        }
+
         public void AddMessage(Message message)
         {
             _datacontext.Messages!.Add(message);
@@ -31,6 +36,21 @@ namespace API.Data
         {
            _datacontext.Messages!.Remove(message);
         }
+
+        public async Task<Connection> GetConnection(string connectionId)
+        {
+            var connexion = await _datacontext.Connections!.FindAsync(connectionId);
+            return connexion!;
+        }
+
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+           var group =  await _datacontext.Groups!
+                          .Include(x => x.Connections)
+                          .Where(x => x.Connections.Any(x => x.ConnectionId == connectionId))
+                          .FirstOrDefaultAsync();
+           return group!;
+        } 
 
         public async Task<Message> GetMessage(int id)
         {
@@ -62,6 +82,14 @@ namespace API.Data
             return await PageList<MessageDTO>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
         }
 
+        public async Task<Group> GetMessageGroup(string groupName)
+        {
+            var messageGroup = await _datacontext.Groups!
+              .Include(x => x.Connections)
+              .FirstOrDefaultAsync(x => x.Name == groupName);
+            return messageGroup!;
+        }
+
         public  async Task<IEnumerable<MessageDTO>> GetMessageThread(string currentUsername, string RecipientUsername)
         {
             var messages = await _datacontext.Messages!
@@ -79,7 +107,7 @@ namespace API.Data
            if(unreadMessages.Any()){
               foreach(var message in unreadMessages)
               {
-                message.DateRead = DateTime.Now;
+                message.DateRead = DateTime.UtcNow;
               }
 
               await _datacontext.SaveChangesAsync();
@@ -87,6 +115,12 @@ namespace API.Data
 
            return _Mapper.Map<IEnumerable<MessageDTO>>(messages);
         }
+
+        public void RemoveConnexion(Connection connection)
+        {
+            _datacontext.Connections!.Remove(connection);
+        }
+
         public async Task<bool> saveAsync()
         {
             return await _datacontext.SaveChangesAsync() > 0;

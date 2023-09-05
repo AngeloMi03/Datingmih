@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { map, take } from 'rxjs';
@@ -29,9 +29,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
 
   constructor(public presence : PresenceService, private route : ActivatedRoute,
-    private messageService : MessageService, private AccountService : AccountService ) 
+    private messageService : MessageService, private AccountService : AccountService,
+    private router : Router
+    ) 
     { 
       this.AccountService.CurrentUser$.pipe(take(1)).subscribe(user => this.user = user);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
   
 
@@ -39,7 +42,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     //this.LoadMember();
 
     this.route.data.subscribe(data =>{
-      console.log("data" +  data['member'])
+      console.log("data " +  data['member'])
       this.Member = data['member'];
     })
 
@@ -97,6 +100,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.activedTad = data;
     if(this.activedTad.heading == "Message" && this.messages.length == 0){
        //this.loadMessage();
+       console.log("member username " + this.Member.username)
        this.messageService.CreateHubConnection(this.user, this.Member.username);
     }else{
       this.messageService.StopHubConnexion();

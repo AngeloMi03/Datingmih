@@ -121,9 +121,9 @@ namespace API.Data
             _datacontext.Connections!.Remove(connection);
         }
 
-        public async Task<bool> saveAsync()
+        /*public async Task<bool> saveAsync()
         {
             return await _datacontext.SaveChangesAsync() > 0;
-        }
+        }*/
     }
 }

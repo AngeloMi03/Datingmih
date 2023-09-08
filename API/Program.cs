@@ -18,10 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container..
 builder.Services.AddSingleton<presenceTracker>();
 builder.Services.AddScoped<ItokenService, API.Service.TokenService>();
-builder.Services.AddScoped<IUserRepository,UserRepository>();
+//builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IPhotoService,PhotoService>();
-builder.Services.AddScoped<IMessageRepository,MessageRepository>();
-builder.Services.AddScoped<ILikesRepository, LikesRepositry>();
+//builder.Services.AddScoped<IMessageRepository,MessageRepository>();
+//builder.Services.AddScoped<ILikesRepository, LikesRepositry>();
+builder.Services.AddScoped<IUnitOfWorks,UnitOfWorks>();
 builder.Services.AddScoped<UserActivity>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddControllers();

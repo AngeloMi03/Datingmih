@@ -72,10 +72,10 @@ namespace API.Data
             return await _datacontext.Users.FindAsync(id);
         }
 
-        public async Task<bool> SaveAllAsync()
+       /* public async Task<bool> SaveAllAsync()
         {
            return  await _datacontext.SaveChangesAsync() > 0;
-        }
+        }*/
         public void Update(AppUsers user)
         {
            _datacontext.Entry(user).State = EntityState.Modified;

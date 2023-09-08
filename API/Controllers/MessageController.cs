@@ -14,14 +14,16 @@ namespace API.Controllers
 {
     public class MessageController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IMessageRepository _messageRepository;
-         private readonly IMapper _mapper;
-        public MessageController(IUserRepository userRepository, IMessageRepository messageRepository, 
+        //private readonly IUserRepository UserRepository;
+        //private readonly IMessageRepository MessageRepository;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWorks _UnitOfWorks;
+        public MessageController(IUnitOfWorks unitOfWorks, 
            IMapper mapper)
         {
-            _messageRepository = messageRepository;
-            _userRepository = userRepository;
+            _UnitOfWorks = unitOfWorks;
+            //_UnitOfWorks.MessageRepository! = messageRepository;
+            //_userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -33,8 +35,8 @@ namespace API.Controllers
               if(username == createMessageDTO.RecipientUsername!.ToLower())
                 return BadRequest("you can not send message to yourself");
               
-              var sender = await _userRepository.GetUserByUserNameAsync(username);
-              var recipient = await _userRepository.GetUserByUserNameAsync(createMessageDTO.RecipientUsername!);
+              var sender = await _UnitOfWorks.UserRepository!.GetUserByUserNameAsync(username);
+              var recipient = await _UnitOfWorks.UserRepository!.GetUserByUserNameAsync(createMessageDTO.RecipientUsername!);
   
               if(recipient == null) return NotFound();
 
@@ -46,9 +48,9 @@ namespace API.Controllers
                  Content = createMessageDTO.content!
               };
 
-              _messageRepository.AddMessage(message);
+              _UnitOfWorks.MessageRepository!.AddMessage(message);
 
-              if(await _messageRepository.saveAsync())
+              if(await _UnitOfWorks.Complete())
                 return Ok(_mapper.Map<MessageDTO>(message));
 
              return BadRequest("failed to send message");
@@ -59,7 +61,7 @@ namespace API.Controllers
         {
              messageParams.username = User.GetUserName();
 
-             var messages = await _messageRepository.GetMessageForUser(messageParams);
+             var messages = await _UnitOfWorks.MessageRepository!.GetMessageForUser(messageParams);
 
              Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize,
                messages.TotalCount, messages.TotalPage);
@@ -72,7 +74,7 @@ namespace API.Controllers
         {
               var currentUsername = User.GetUserName();
 
-            return  Ok(await _messageRepository.GetMessageThread(currentUsername, username));
+            return  Ok(await _UnitOfWorks.MessageRepository!.GetMessageThread(currentUsername, username));
         }
 
         [HttpDelete("{id}")]
@@ -80,7 +82,7 @@ namespace API.Controllers
         {
           var username = User.GetUserName();
 
-          var message = await _messageRepository.GetMessage(id);
+          var message = await _UnitOfWorks.MessageRepository!.GetMessage(id);
 
           if(message.Sender!.UserName != username && message.Recipient!.UserName != null)
             return Unauthorized();
@@ -90,9 +92,9 @@ namespace API.Controllers
           if(message.Recipient!.UserName == username) message.RecipientDeleted = true;
 
           if(message.SenderDeleted && message.RecipientDeleted )
-            _messageRepository.DeleteMessage(message);
+            _UnitOfWorks.MessageRepository!.DeleteMessage(message);
 
-          if(await _messageRepository.saveAsync()) return Ok();
+          if(await _UnitOfWorks.Complete()) return Ok();
 
           return BadRequest("Failed to deleted message");
         }

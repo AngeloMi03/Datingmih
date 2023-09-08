@@ -27,7 +27,7 @@
       
       <div class="dropdown" *ngIf="(accounteService.CurrentUser$ | async) as user" dropdown>
         <img src={{user.photoUrl}} alt="{{user.photoUrl}}" />
-        <a class="dropdown-toggle text-light" dropdownToggle>{{(user.userName | titlecase)}}</a>
+        <a class="dropdown-toggle text-light" dropdownToggle>{{(user.username | titlecase)}}</a>
         <div class="dropdown-menu mt-3" *dropdownMenu>
           <a class="dropdown-item" routerLink="member/edit">edit profil</a>
           <div class="dropdown-divider"></div>

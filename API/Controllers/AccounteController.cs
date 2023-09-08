@@ -61,7 +61,7 @@ namespace API.Controllers
             if(!role.Succeeded) return BadRequest(role.Errors);
 
             return new DTOUSER{
-                UserName = user.UserName,
+                Username = user.UserName,
                 Token = await _TokenService.CreationToken(user),
                 KnowAs = user.KnowAs,
                 Gender = user.Gender
@@ -92,7 +92,7 @@ namespace API.Controllers
             if(!result.Succeeded) return Unauthorized();
 
             return new DTOUSER{
-                UserName = user.UserName,
+                Username = user.UserName,
                 Token = await _TokenService.CreationToken(user),
                 PhotoUrl = user?.Photos?.FirstOrDefault(x => x.IsMain)?.url,
                 KnowAs = user?.KnowAs,

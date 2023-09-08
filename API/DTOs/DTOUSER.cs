@@ -7,7 +7,7 @@ namespace API.DTOs
 {
     public class DTOUSER
     {
-        public String? UserName { get; set; }
+        public String? Username { get; set; }
         public String? Token { get; set; }
         public String? PhotoUrl { get; set; }
         public String? KnowAs { get; set; }

@@ -23,7 +23,7 @@ export class MemberEditComponent implements OnInit {
 
   constructor(private accounteService : AccountService, private memberService : MemberService,
        private toast : ToastrService) { 
-    this.accounteService.CurrentUser$.pipe(take(1)).subscribe(user => {
+    this.accounteService.CurrentUser$.pipe(take(1)).subscribe((user : User) => {
       this.user = user
       console.log( "user" + this.user.username)
     });

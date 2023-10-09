@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../_services/message.service';
 import { Message } from '../_models/Message';
 import { Pagination } from '../_models/Pagination';
+import { ConfirmService } from '../_services/confirm.service';
 
 @Component({
   selector: 'app-messages',
@@ -17,7 +18,7 @@ export class MessagesComponent implements OnInit {
   loading = false;
   
 
-  constructor(private messageService : MessageService) { }
+  constructor(private messageService : MessageService, private confirmService : ConfirmService) { }
 
   ngOnInit(): void {
     this.loadMessage();
@@ -26,6 +27,7 @@ export class MessagesComponent implements OnInit {
   loadMessage()
   {
     this.loading = true;
+    console.log("this.pageNumber" + this.pageNumber )
     this.messageService.GetMessages(this.pageNumber,this.pageSize,this.container).subscribe(
        (response) => {
         this.messages = response.result;
@@ -33,12 +35,19 @@ export class MessagesComponent implements OnInit {
         this.loading = false
        }
     )
+    this.loading = false
   }
 
   deleteMessage(id : number)
   {
-    this.messageService.DeleteMessage(id).subscribe(() => {
-      this.messages.splice(this.messages.findIndex(m => m.id == id), 1);
+
+    this.confirmService.Confirm('confirm delete message', 'this cannot be undone').subscribe(result =>{
+      if(result)
+      {
+        this.messageService.DeleteMessage(id).subscribe(() => {
+          this.messages.splice(this.messages.findIndex(m => m.id == id), 1);
+        })
+      }
     })
   }
 

@@ -40,11 +40,11 @@
         <tabset class="member-tabset">
             <tab heading="about {{Member.knowAs}}">
                 <form #editForm="ngForm" id="editForm" (submit)="updateUser()">
-                    <h4>Descritpion</h4>
+                    <h4>Descritpion :</h4>
                     <textarea class="form-control" [(ngModel)]="Member.introduction" name="introduction" rows="4"></textarea>
-                    <h4 class="mt-2">Looking For</h4>
+                    <h4 class="mt-2">Looking For :</h4>
                     <textarea class="form-control"  [(ngModel)]="Member.lookingfor" name="lookingfor" rows="4"></textarea>
-                    <h4 class="mt-2">Interest</h4>
+                    <h4 class="mt-2">Interest :</h4>
                     <textarea class="form-control"  [(ngModel)]="Member.interests" name="interests" rows="4"></textarea>
                     <h4 class="mt-2">location details :</h4>
                     <div class="form-inline">

@@ -15,7 +15,7 @@ export class MemberDetailsResolvers implements Resolve<Member>
 
     resolve(route : ActivatedRouteSnapshot): Observable<any>
     {
-        console.log("username" +route.paramMap.get('username'))
+        //console.log("username" +route.paramMap.get('username'))
        return this.memberService.GetMember(route.paramMap.get('username'));
     }
 

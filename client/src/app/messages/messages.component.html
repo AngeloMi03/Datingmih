@@ -1,16 +1,16 @@
 <div class="col mb-4">
     <div class="btn-group" name="container">
-        <button class="btn btn-primary" btnRadio="Unread" [(ngModel)]="container" (click)="loadMessage()">
+        <button class="btn btn-success" btnRadio="Unread" [(ngModel)]="container" (click)="loadMessage()">
          <i class="fa fa-envelope">
             Unread
          </i>
         </button>
-        <button class="btn btn-primary" btnRadio="inbox" [(ngModel)]="container" (click)="loadMessage()">
+        <button class="btn btn-info" btnRadio="inbox" [(ngModel)]="container" (click)="loadMessage()">
             <i class="fa fa-envelope-open">
                Inbox
             </i>
            </button>
-        <button class="btn btn-primary" btnRadio="outbox" [(ngModel)]="container" (click)="loadMessage()">
+        <button class="btn btn-info" btnRadio="outbox" [(ngModel)]="container" (click)="loadMessage()">
             <i class="fa fa-paper-plane">
                Outbox
             </i>
@@ -63,7 +63,7 @@
           <button 
           (click)="$event.stopPropagation()" 
           (click)="deleteMessage(message.id)" 
-          class="btn btn-danger">Delete</button>
+          class="btn btn-danger bg-danger"><i class="fa fa-trash"></i></button>
        </td>
        </tr>
    </table>

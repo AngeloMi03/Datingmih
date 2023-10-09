@@ -23,6 +23,8 @@ namespace API.Interface
         Task<PageList<membresDTO>> GetMembersASync(UseParams useParams);
         Task<membresDTO> GetMemberASync(string username);
 
+        Task<string> GetUserGender(string username);
+
 
     }
 }

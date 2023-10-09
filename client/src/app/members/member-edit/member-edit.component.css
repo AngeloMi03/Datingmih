@@ -8,8 +8,31 @@
     padding: 0 25px;
 }
 
+
+
+
 .card-footer{
     padding: 10px 15px;
     background-color: #fff;
     border-top: none;
+}
+
+
+.card{
+    border: none;
+    box-shadow: 0px 4px 8px rgb(0 0 0/8%), 0px 12px 18px rgb(0 0 0/8%);
+}
+
+
+textarea {
+  border-radius: 0.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  border: 0.1rem #eef2f5 solid ;
+}
+
+h4{
+    color: #17a2b8;
 }
